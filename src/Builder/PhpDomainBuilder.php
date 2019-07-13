@@ -94,7 +94,6 @@ class PhpDomainBuilder extends RstBuilder
     public static function getNamespace(Element $element)
     {
         return substr($element->getFqsen(), 0, strlen($element->getFqsen()) - strlen('\\'.$element->getName()));
-        //return str_replace('\\' . $element->getName(), '', $element->getFqsen());
     }
 
     /**
@@ -325,21 +324,21 @@ class PhpDomainBuilder extends RstBuilder
             '?$this',
         ];
         $types = explode('|', $typesString);
-        $result = '';
+        $result = [];
         /* @var string $type */
         foreach ($types as $typeFull) {
             $type = str_replace('[]', '', $typeFull);
             if (in_array($type, $whitelist, true)) {
-                $result .= $typeFull.' | ';
+                $result[] = $typeFull;
                 continue;
             }
             if (0 === strpos($type, '\\')) {
                 $type = substr($type, 1);
             }
-            $result .= ':any:`'.RstBuilder::escape($typeFull).' <'.RstBuilder::escape($type).'>` | ';
+            $result[] = RstBuilder::escape($typeFull);
         }
 
-        return substr($result, 0, -3);
+        return implode(' | ', $result);
     }
 
     /**
