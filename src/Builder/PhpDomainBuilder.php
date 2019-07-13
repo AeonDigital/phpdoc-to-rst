@@ -231,20 +231,26 @@ class PhpDomainBuilder extends RstBuilder
             case 'return':
                 /** @var Return_ $return */
                 $return = $tags[0];
-                $this->addMultiline(':Returns: '.self::typesToRst($return->getType()).' '.RstBuilder::escape($return->getDescription()),
-                    true);
+                $useType = "‹ ".self::typesToRst($return->getType())." ›|br|\n";
+                $useDescription = implode("\n  ", explode("\n", RstBuilder::escape($return->getDescription())));
+                
+                $this->addMultiline(':Returns: '.$useType.'  '.$useDescription, true);
                 break;
             case 'var':
                 /** @var DocBlock\Tags\Var_ $return */
                 $return = $tags[0];
-                $this->addMultiline(':Type: '.self::typesToRst($return->getType()).' '.RstBuilder::escape($return->getDescription()),
-                    true);
+                $useType = "‹ ".self::typesToRst($return->getType())." ›|br|\n";
+                $useDescription = implode("\n  ", explode("\n", RstBuilder::escape($return->getDescription())));
+                
+                $this->addMultiline(':Type: '.$useType.'  '.$useDescription, true);
                 break;
             case 'throws':
                 /** @var Throws $tag */
                 foreach ($tags as $tag) {
-                    $this->addMultiline(':Throws: '.self::typesToRst($tag->getType()).' '.RstBuilder::escape($tag->getDescription()),
-                        true);
+                    $useType = "‹ ".self::typesToRst($tag->getType())." ›|br|\n";
+                    $useDescription = implode("\n  ", explode("\n", RstBuilder::escape($tag->getDescription())));
+
+                    $this->addMultiline(':Throws: '.$useType.'  '.$useDescription, true);
                 }
                 break;
             case 'since':
@@ -300,6 +306,23 @@ class PhpDomainBuilder extends RstBuilder
             'self',
             'static',
             '$this',
+            '?string',
+            '?int',
+            '?integer',
+            '?float',
+            '?bool',
+            '?boolean',
+            '?array',
+            '?resource',
+            '?callable',
+            '?mixed',
+            '?void',
+            '?object',
+            '?false',
+            '?true',
+            '?self',
+            '?static',
+            '?$this',
         ];
         $types = explode('|', $typesString);
         $result = '';
@@ -486,16 +509,17 @@ class PhpDomainBuilder extends RstBuilder
                 if (0 === strpos($typString, '\\')) {
                     $typString = substr($typString, 1);
                 }
-                $paramItem = '* ';
-                $paramItem .= '**';
+                $paramItem = '- ';
+                if ($typString !== null) {
+                    $paramItem .= '‹ '.self::typesToRst($typString).' › ';
+                }
+
                 if ($argument->isVariadic()) {
                     $paramItem .= '...';
                 }
-                $paramItem .= '$'.$argument->getName().'** ';
-                if ($typString !== null) {
-                    $paramItem .= '('.self::typesToRst($typString).') ';
-                }
-                $paramItem .= ' '.$param->getDescription();
+                $paramItem .= '**$'.$argument->getName().'** |br|';
+
+                $paramItem .= "\n  " . implode("\n  ", explode("\n", $param->getDescription()));
                 $parameterDetails .= $paramItem.PHP_EOL;
             }
         }

@@ -1,5 +1,5 @@
 {
-    "name": "abbadon1334/phpdoc-to-rst",
+    "name": "aeondigital/phpdoc-to-rst",
     "description": "Generate Sphinx/ReStructured documentation from PHPDoc",
     "type": "library",
     "require": {
