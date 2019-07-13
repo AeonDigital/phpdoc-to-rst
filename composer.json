@@ -24,6 +24,10 @@
         {
             "name": "Ferenc Kurucz",
             "email": "ferenc.kurucz.6351@gmail.com"
+        },
+        {
+            "name": "Rianna Cantarelli",
+            "email": "rianna.aeon@gmail.com"
         }
     ],
     "minimum-stability": "dev",
