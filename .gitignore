@@ -5,4 +5,6 @@ composer.phar
 /composer.lock
 .DS_Store
 .php_cs.cache
-/build
+/docs/epub
+/docs/html
+/docs/rest

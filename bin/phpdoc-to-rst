@@ -50,6 +50,18 @@ require PHPUNIT_COMPOSER_INSTALL;
 
 use Symfony\Component\Console\Application;
 
-$application = new Application();
-$application->add(new JuliusHaertl\PHPDocToRst\GenerateDocumentationCommand());
-$application->run();
+$command = null;
+if (count($_SERVER["argv"]) > 2) {
+    switch ($_SERVER["argv"][1]) {
+        case "generate":
+            $command = new JuliusHaertl\PHPDocToRst\GenerateDocumentationCommand();
+            break;
+        case "generate-ns":
+            $command = new JuliusHaertl\PHPDocToRst\GenerateNamespaceDocumentationCommand();
+            break;
+    }
+
+    $application = new Application();
+    $application->add($command);
+    $application->run();
+} 

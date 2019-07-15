@@ -79,7 +79,7 @@ Confirme a instalação do mesmo com o comando:
 
 ### Instalação do RTD Theme
 [Saiba mais](https://pypi.org/project/sphinx-rtd-theme/) sobre o RTD Theme.
-  > pip install sphinx_rtd_theme
+  > pip install -U sphinx_rtd_theme
 
 &nbsp;  
 &nbsp;  
@@ -87,7 +87,7 @@ Confirme a instalação do mesmo com o comando:
 
 ### Instalação do analisador MarkDown
 [Saiba Mais](http://www.sphinx-doc.org/en/master/usage/markdown.html) sobre o uso de MarkDown com o Sphynx.
-  > pip install --upgrade recommonmark
+  > pip install -U recommonmark
 
 
 
@@ -96,19 +96,19 @@ Confirme a instalação do mesmo com o comando:
 
 
 ## Usando o Sphynx
-É aconselhado criar um diretório específico para a documentação do seu projeto. No caso dos projetos disponibilizados pela **Aeon Digital** será sempre usado o diretório `[./docs]` na raiz do projeto.  
+É aconselhado criar um diretório específico para a documentação do seu projeto. No caso dos projetos disponibilizados pela **Aeon Digital** será sempre usado o diretório `[./docs]` na raiz do mesmo.  
 
-Dentro deste diretório haverá um outro chamado `[./docs/source]` que é onde ficarão os arquivos fontes da documentação que serão manipulados pelo *Sphynx* para exportar os arquivos HTML ou de outro tipo que você deseje utilizar.  
-Também dentro deste diretório estará um outro de nome `[./docs/source/_static]` que contém arquivos estáticos como imagens e folhas de estilo que serão utilizadas pelo Sphynx quando gerar a documentação final.
-Outro diretório dentro de `[./docs]` será o `[./docs/html]` que estará apto a receber a documentação neste respectivo formato.  
+Dentro deste diretório haverá um outro chamado `[./docs/rest]` que é onde ficarão os arquivos fontes da documentação que serão manipulados pelo *Sphynx* para exportar os arquivos HTML ou de outro tipo que você deseje utilizar.  
+
+O diretório especial `[./docs/_original_static]` possui arquivos que deverão ser mesclados com os resultantes da extração e que ficam em `[./docs/rest]`. Nele, há imagens, folhas de estilo e o arquivo de configuração `[conf.py]` que deve ser editado para estar de acordo com cada projeto usado.  
 
 
 &nbsp;  
 &nbsp;  
 
 
-### Documento "[./docs/source/conf.py]"
-Neste documento devem ser adicionadas as configurações que o *Sphynx* usará para exportar a documentção existente dentro do diretório *source*.  
+### Documento "[conf.py]"
+Neste documento devem ser adicionadas as configurações que o *Sphynx* usará para exportar a documentção existente dentro do diretório *rest*.  
 Para informações completas de como este arquivo funciona e quais suas principais configurações você pode conferir em http://www.sphinx-doc.org/en/master/config  
 
 
@@ -132,7 +132,7 @@ Extraia o conteúdo usando o comando:
 - `source_directory`: Nome do diretório onde estão os arquivos fonte para criação da documentação [normalmente será *src*].
 
 **Exemplo**
-> ./vendor/bin/phpdoc-to-rst generate docs/source src
+> ./vendor/bin/phpdoc-to-rst generate docs/rest src
 
 
 ## Gerando uma saída em um formato específico
@@ -148,9 +148,8 @@ A partir do diretório raíz do projeto:
 - `output_directory`: Nome do diretório onde os documentos extraidos serão adicionados.
 
 **Exemplo**
-> sphinx-build -b html docs/source docs/html  
-> sphinx-build -b epub docs/source docs/epub 
-
+> sphinx-build -b html docs/rest docs/html  
+> sphinx-build -b epub docs/rest docs/epub 
 
 
 &nbsp;  
