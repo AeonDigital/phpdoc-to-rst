@@ -11,16 +11,16 @@ import sphinx_rtd_theme
 
 # -- Informações do Projeto --------------------------------------------------
 
-project = 'PHPDocs to RST'
-project_description = 'Extrai as anotacoes PHPDoc de um projeto para o formato reST'
-project_year = '2019'
-project_company = 'Aeon Digital'
-project_publisher = 'Aeon Digital'
-project_author = 'Rianna Cantarelli'
-project_contributor = ''
-project_locale = 'pt-BR'
-project_language = 'pt'
-project_version = 'v0.1.2-alpha'
+project = '[[PROJECT_NAME]]'
+project_description = '[[PROJECT_DESCRIPTION]]'
+project_year = '[[PROJECT_YEAR]]'
+project_company = '[[PROJECT_COMPANY]]'
+project_publisher = '[[PROJECT_PUBLISHER]]'
+project_author = '[[PROJECT_AUTHOR_NAME]]'
+project_contributor = '[[PROJECT_CONTRIBUTOR]]'
+project_locale = '[[PROJECT_PHPDOC_LOCALE]]'
+project_language = '[[PROJECT_PHPDOC_LANGUAGE]]'
+project_version = '[[PROJECT_VERSION]]'
 
 
 

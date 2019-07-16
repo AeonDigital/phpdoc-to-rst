@@ -20,6 +20,7 @@
 
 namespace JuliusHaertl\PHPDocToRst;
 
+use JuliusHaertl\PHPDocToRst\MainCommand;
 use JuliusHaertl\PHPDocToRst\Extension\GithubLocationExtension;
 use JuliusHaertl\PHPDocToRst\Extension\NoPrivateExtension;
 use JuliusHaertl\PHPDocToRst\Extension\PublicOnlyExtension;
@@ -35,7 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal Only for use of the phpdoc-to-rst cli tool
  */
-class GenerateDocumentationCommand extends Command
+class GenerateDocumentationCommand extends MainCommand
 {
     protected function configure()
     {
@@ -80,5 +81,6 @@ class GenerateDocumentationCommand extends Command
             ]);
         }
         $apiDocBuilder->build();
+        $this->mergeStaticContent($dst);
     }
 }

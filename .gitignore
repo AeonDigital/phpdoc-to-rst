@@ -8,3 +8,4 @@ composer.phar
 /docs/epub
 /docs/html
 /docs/rest
+/src/_static/conf.py

@@ -20,6 +20,7 @@
 
 namespace JuliusHaertl\PHPDocToRst;
 
+use JuliusHaertl\PHPDocToRst\MainCommand;
 use JuliusHaertl\PHPDocToRst\Extension\GithubLocationExtension;
 use JuliusHaertl\PHPDocToRst\Extension\NoPrivateExtension;
 use JuliusHaertl\PHPDocToRst\Extension\PublicOnlyExtension;
@@ -35,7 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal Only for use of the phpdoc-to-rst cli tool
  */
-class GenerateNamespaceDocumentationCommand extends Command
+class GenerateNamespaceDocumentationCommand extends MainCommand
 {
     protected function configure()
     {
@@ -93,67 +94,5 @@ class GenerateNamespaceDocumentationCommand extends Command
         $apiDocBuilder->build();
         $this->moveNamespaceDirectory($dst, $ns);
         $this->mergeStaticContent($dst);
-    }
-
-
-
-
-
-    protected function clearDirectory(string $dir) : void
-    {
-        $dirIt = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
-        $recIt = new \RecursiveIteratorIterator($dirIt, \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($recIt as $file) {
-            (($file->isDir() === true) ? rmdir($file->getRealPath()) : unlink($file->getRealPath()));
-        }
-    }
-
-
-    protected function copyDirectory(string $source, string $dest) : void
-    {
-        $isOK = true;
-        // Apenas se trata-se de um diretório real.
-        if (is_dir($source) === true) {
-            // Se o diretório de destino não existir, cria-o
-            if (is_dir($dest) === false) {
-                $isOK = mkdir($dest);
-            }
-            // Se está ok
-            if ($isOK === true) {
-                // Itera os itens do diretório.
-                $dir = scandir($source);
-                foreach ($dir as $key => $fileName) {
-                    if (in_array($fileName, [".", ".."]) === false && $isOK === true) {
-                        $origin = $source . "/" . $fileName;
-                        $target = $dest . "/" . $fileName;
-                        // Se for um diretório
-                        if (is_dir($origin) === true) {
-                            $this->copyDirectory($origin, $target);
-                        } else {
-                            copy($origin, $target);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    protected function moveNamespaceDirectory(string $destinationPath, string $namespace) : void
-    {
-        $tgtNSPath = rtrim($destinationPath, '\\/') . '/' . rtrim($namespace, '\\/');
-        if (is_dir($tgtNSPath) === true) {
-            rename($tgtNSPath, '_tmpNSDirectory');
-            $this->clearDirectory($destinationPath);
-            rmdir($destinationPath);
-            rename('_tmpNSDirectory', $destinationPath);
-        }
-    }
-
-
-    protected function mergeStaticContent(string $destinationPath) : void
-    {
-        $staticContent = __DIR__.DIRECTORY_SEPARATOR.'_static';
-        $this->copyDirectory($staticContent, $destinationPath);
     }
 }
