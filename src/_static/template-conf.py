@@ -217,44 +217,33 @@ html_search_language = project_language
 
 # -- Opções para a saida EPUB ------------------------------------------------
 
-# Nome para o documento.
-# O comum é o próprio nome do projeto.
-# epub_basename = project_publisher + ' -- ' + project + ' - ' + release
+# Nome para o arquivo.
+epub_basename = project_publisher + ' -- ' + project + ' - ' + release
 
 
 
-# Descrição do documento
-# epub_description = project_description
+# Titulo do documento.
+epub_title = project + ' - ' + release
 
 
 
 # Autor do documento.
-# epub_author = project_author
-
-
-
-# Nome das pessoas e/ou empresas que contribuiram para a formação deste documento.
-# epub_contributor = project_contributor
+epub_author = project_author
 
 
 
 # Lingua do documento.
-# epub_language = project_locale
+epub_language = project_locale
 
 
 
 # Nome da instituição/empresa/pessoa responsável pela publicação deste documento.
-# epub_publisher = project_publisher
+epub_publisher = project_publisher
 
 
 
 # CopyRight do documento
-# epub_copyright = project_company
-
-
-
-# Indica como as URLs devem ser mostradas
-# epub_show_urls = 'footnote'
+epub_copyright = project_company
 
 
 
@@ -268,7 +257,7 @@ html_search_language = project_language
 # Veja a documentação completa em:
 # http://www.sphinx-doc.org/en/master/usage/configuration.html
 # https://pypi.org/project/sphinx-rtd-theme/
-# epub_theme = 'sphinx_rtd_theme'
+epub_theme = 'sphinx_rtd_theme'
 
 
 
@@ -289,3 +278,7 @@ html_search_language = project_language
 #    'includehidden': True,
 #    'titles_only': False
 #}
+
+
+# Indica como as URLs devem ser mostradas
+epub_show_urls = 'footnote'
