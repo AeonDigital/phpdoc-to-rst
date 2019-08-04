@@ -114,5 +114,8 @@ class MainCommand extends Command
     {
         $staticContent = __DIR__.DIRECTORY_SEPARATOR.'_static';
         $this->copyDirectory($staticContent, $destinationPath);
+
+        unlink($destinationPath.DIRECTORY_SEPARATOR.'template-conf.py');
+        unlink($destinationPath.DIRECTORY_SEPARATOR.'index-namespaces-all.rst');
     }
 }

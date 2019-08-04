@@ -20,12 +20,14 @@ project_author = '[[PROJECT_AUTHOR_NAME]]'
 project_contributor = '[[PROJECT_CONTRIBUTOR]]'
 project_locale = '[[PROJECT_PHPDOC_LOCALE]]'
 project_language = '[[PROJECT_PHPDOC_LANGUAGE]]'
-project_version = '[[PROJECT_VERSION]]'
+project_short_version = '[[PROJECT_SHORT_VERSION]]'
+project_full_version = '[[PROJECT_FULL_VERSION]]'
 
 
 
 # Versão atual
-release = project_version
+version = project_short_version
+release = project_full_version
 copyright = project_year + ', ' + project_company
 
 
@@ -73,7 +75,7 @@ exclude_patterns = []
 # 'recommonmark' é uma extenção que permite o uso de documentos MarkDown.
 # 'sphinxcontrib.phpdomain' é uma extenção que marca corretamente blocos
 # de código PHP.
-extensions = ['recommonmark', 'sphinxcontrib.phpdomain']
+extensions = ['sphinxcontrib.phpdomain']
 
 
 
@@ -217,42 +219,42 @@ html_search_language = project_language
 
 # Nome para o documento.
 # O comum é o próprio nome do projeto.
-epub_basename = project_publisher + ' -- ' + project + ' - ' + release
+# epub_basename = project_publisher + ' -- ' + project + ' - ' + release
 
 
 
 # Descrição do documento
-epub_description = project_description
+# epub_description = project_description
 
 
 
 # Autor do documento.
-epub_author = project_author
+# epub_author = project_author
 
 
 
 # Nome das pessoas e/ou empresas que contribuiram para a formação deste documento.
-epub_contributor = project_contributor
+# epub_contributor = project_contributor
 
 
 
 # Lingua do documento.
-epub_language = project_locale
+# epub_language = project_locale
 
 
 
 # Nome da instituição/empresa/pessoa responsável pela publicação deste documento.
-epub_publisher = project_publisher
+# epub_publisher = project_publisher
 
 
 
 # CopyRight do documento
-epub_copyright = project_company
+# epub_copyright = project_company
 
 
 
 # Indica como as URLs devem ser mostradas
-epub_show_urls = 'footnote'
+# epub_show_urls = 'footnote'
 
 
 

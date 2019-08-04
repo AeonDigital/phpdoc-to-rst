@@ -59,14 +59,15 @@ class ConfigDocumentationCommand extends MainCommand
 
 
         $output->writeln('Please enter the information for: ');
-        $qst_Name           = new Question('1 - Project name : ',           'ProjectName');
-        $qst_Description    = new Question('2 - Project description : ',    '');
-        $qst_Company        = new Question('3 - Company : ',                '');
-        $qst_Publisher      = new Question('4 - Publisher : ',              '');
-        $qst_Author         = new Question('5 - Author : ',                 '');
-        $qst_Contributors   = new Question('6 - Contributors : ',           '');
-        $qst_Locale         = new Question('7 - Locale : ',                 'en-US');
-        $qst_Version        = new Question('8 - Version : ',                '');
+        $qst_Name           = new Question('1 - Project name : ',                       'ProjectName');
+        $qst_Description    = new Question('2 - Project description : ',                '');
+        $qst_Company        = new Question('3 - Company : ',                            '');
+        $qst_Publisher      = new Question('4 - Publisher : ',                          '');
+        $qst_Author         = new Question('5 - Author : ',                             '');
+        $qst_Contributors   = new Question('6 - Contributors : ',                       '');
+        $qst_Locale         = new Question('7 - Locale : ',                             'en-US');
+        $qst_Version        = new Question('8 - Version [only numbers] : ',             '');
+        $qst_Stability      = new Question('9 - Stability [alpha, beta, cr] : ',  '');
 
 
         $helper = $this->getHelper('question');
@@ -86,6 +87,8 @@ class ConfigDocumentationCommand extends MainCommand
         $output->writeln('');
         $PROJECT_VERSION = $helper->ask($input, $output, $qst_Version);
         $output->writeln('');
+        $PROJECT_STABILITY = $helper->ask($input, $output, $qst_Stability);
+        $output->writeln('');
 
         $now = new \DateTime();
         $PROJECT_YEAR = $now->format('Y');
@@ -98,12 +101,16 @@ class ConfigDocumentationCommand extends MainCommand
             }
         }
 
+        $PROJECT_SHORT_VERSION = $PROJECT_VERSION;
+        $PROJECT_FULL_VERSION = 'v'.$PROJECT_VERSION.(($PROJECT_STABILITY === '') ? '' : '-'.$PROJECT_STABILITY);
+
 
 
         $templateData = [
             'PROJECT_NAME', 'PROJECT_DESCRIPTION', 'PROJECT_YEAR', 'PROJECT_COMPANY', 
             'PROJECT_PUBLISHER', 'PROJECT_AUTHOR_NAME', 'PROJECT_CONTRIBUTOR', 
-            'PROJECT_PHPDOC_LOCALE', 'PROJECT_PHPDOC_LANGUAGE', 'PROJECT_VERSION'
+            'PROJECT_PHPDOC_LOCALE', 'PROJECT_PHPDOC_LANGUAGE', 'PROJECT_SHORT_VERSION',
+            'PROJECT_FULL_VERSION'
         ];
         $rawTemplate = file_get_contents(__DIR__ . '/_static/template-conf.py');
 
