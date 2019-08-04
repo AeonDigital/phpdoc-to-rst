@@ -136,7 +136,7 @@ html_theme_options = {
     'style_external_links': False,
     'style_nav_header_background': '#175E8D',
 
-    'collapse_navigation': True,
+    'collapse_navigation': False,
     'sticky_navigation': True,
     'navigation_depth': 4,
     'includehidden': True,
