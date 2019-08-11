@@ -151,6 +151,7 @@ class MainCommand extends Command
                 $nline = str_replace("\\\\", "§", $line);
                 $nline = str_replace("\\", "", $nline);
                 $nline = str_replace("§", "\\", $nline);
+                $nline = str_replace("\"", "&#34;", $nline);
 
                 if ($insideCodeBlock === false) {
                     if (strpos($nline, "```") !== false) { 
