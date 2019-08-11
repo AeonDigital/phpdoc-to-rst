@@ -152,22 +152,17 @@ class MainCommand extends Command
                 $nline = str_replace("\\", "", $nline);
                 $nline = str_replace("§", "\\", $nline);
                 $nline = str_replace("\"", "&#34;", $nline);
+                $nline = str_replace("'", "&#39;", $nline);
 
+                $hasCodeBlockMarkup = (strpos($nline, "```") !== false);
                 if ($insideCodeBlock === false) {
-                    if (strpos($nline, "```") !== false) { 
-                        $insideCodeBlock = true; 
-                        $fileLines[$i] = str_replace("```", "\`\`\`", $nline);
-                    }
+                    $insideCodeBlock = true; 
                 } else {
-                    if (strpos($nline, "```") !== false) { 
-                        $insideCodeBlock = false; 
-                        $fileLines[$i] = str_replace("```", "\`\`\`", $nline);
-                    }
+                    $insideCodeBlock = false; 
                 }
 
-                if ($insideCodeBlock === true) {
-                    $fileLines[$i] = $nline;
-                }
+                $nline = str_replace("```", "\`\`\`", $nline);
+                $fileLines[$i] = $nline;
             }
 
 
