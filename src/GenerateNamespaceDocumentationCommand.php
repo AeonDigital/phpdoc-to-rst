@@ -94,5 +94,6 @@ class GenerateNamespaceDocumentationCommand extends MainCommand
         $apiDocBuilder->build();
         $this->moveNamespaceDirectory($dst, $ns);
         $this->mergeStaticContent($dst);
+        $this->reParseRestFiles($dst);
     }
 }

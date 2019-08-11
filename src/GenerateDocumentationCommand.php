@@ -83,5 +83,6 @@ class GenerateDocumentationCommand extends MainCommand
         }
         $apiDocBuilder->build();
         $this->mergeStaticContent($dst);
+        $this->reParseRestFiles($dst);
     }
 }

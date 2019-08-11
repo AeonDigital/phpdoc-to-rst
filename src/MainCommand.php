@@ -118,4 +118,57 @@ class MainCommand extends Command
         unlink($destinationPath.DIRECTORY_SEPARATOR.'template-conf.py');
         unlink($destinationPath.DIRECTORY_SEPARATOR.'index-namespaces-all.rst');
     }
+
+
+
+    /**
+     * Make some adjusts on `rst`files generated.
+     *
+     * @param string $destinationPath Path to reparse files.
+     * @return void
+     */
+    protected function reParseRestFiles(string $destinationPath) : void
+    {
+        $targetFiles = [];
+        $dirIt = new \RecursiveDirectoryIterator($destinationPath, \FilesystemIterator::SKIP_DOTS);
+        $recIt = new \RecursiveIteratorIterator($dirIt, \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($recIt as $file) {
+            if ($file->isDir() === false) {
+                if (strpos($file->getRealPath(), ".rst") !== false) {
+                    $targetFiles[] = $file->getRealPath();
+                }
+            }
+        }
+
+
+        foreach ($targetFiles as $absoluteFilePath) {
+            $fileContent = file_get_contents($absoluteFilePath);
+            $fileContent = str_replace("\*\*", "**", $fileContent);
+
+            $fileLines = explode("\n", $fileContent);
+            $insideCodeBlock = false;
+            foreach ($fileLines as $i => $line) {
+                $nline = str_replace("\\\\", "§", $line);
+                $nline = str_replace("\\", "", $nline);
+                $nline = str_replace("§", "\\", $nline);
+
+                if ($insideCodeBlock === false) {
+                    if (strpos($nline, "```") !== false) { $insideCodeBlock = true; }
+                } else {
+                    if (strpos($nline, "```") !== false) { 
+                        $insideCodeBlock = false; 
+                        $fileLines[$i] = $nline;
+                    }
+                }
+
+                if ($insideCodeBlock === true) {
+                    $fileLines[$i] = $nline;
+                }
+            }
+
+
+            $fileContent = implode("\n", $fileLines);
+            file_put_contents($absoluteFilePath, $fileContent);
+        }
+    }
 }
