@@ -153,11 +153,14 @@ class MainCommand extends Command
                 $nline = str_replace("§", "\\", $nline);
 
                 if ($insideCodeBlock === false) {
-                    if (strpos($nline, "```") !== false) { $insideCodeBlock = true; }
+                    if (strpos($nline, "```") !== false) { 
+                        $insideCodeBlock = true; 
+                        $fileLines[$i] = str_replace("```", "\`\`\`", $nline);
+                    }
                 } else {
                     if (strpos($nline, "```") !== false) { 
                         $insideCodeBlock = false; 
-                        $fileLines[$i] = $nline;
+                        $fileLines[$i] = str_replace("```", "\`\`\`", $nline);
                     }
                 }
 
