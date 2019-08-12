@@ -161,6 +161,12 @@ class MainCommand extends Command
                     $insideCodeBlock = false; 
                 }
 
+
+                if (strpos($nline, ":php:class:") !== false ||
+                    strpos($nline, ":php:interface:") !== false) {
+                    $nline = str_replace("\\", "\\\\", $nline);
+                }
+
                 $nline = str_replace("```", "\`\`\`", $nline);
                 $fileLines[$i] = $nline;
             }
