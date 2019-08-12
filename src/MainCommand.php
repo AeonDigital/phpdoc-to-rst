@@ -153,6 +153,7 @@ class MainCommand extends Command
                 $nline = str_replace("§", "\\", $nline);
                 $nline = str_replace("\"", "&#34;", $nline);
                 $nline = str_replace("'", "&#39;", $nline);
+                $nline = str_replace(":maxdepth: 1", ":maxdepth: 6", $nline);
 
                 $hasCodeBlockMarkup = (strpos($nline, "```") !== false);
                 if ($insideCodeBlock === false) {
