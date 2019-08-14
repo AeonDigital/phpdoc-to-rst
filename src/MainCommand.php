@@ -163,8 +163,10 @@ class MainCommand extends Command
                 }
 
 
-                if (strpos($nline, ":php:class:") !== false ||
-                    strpos($nline, ":php:interface:") !== false) {
+                if (strpos($nline, ":php:namespace:") !== false ||
+                    strpos($nline, ":php:interface:") !== false ||
+                    strpos($nline, ":php:class:") !== false ||
+                    strpos($nline, ":Returns:") !== false) {
                     $nline = str_replace("\\", "\\\\", $nline);
                 }
 
