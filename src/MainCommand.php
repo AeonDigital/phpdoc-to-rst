@@ -140,7 +140,7 @@ class MainCommand extends Command
             }
         }
 
-$show = true;
+
         foreach ($targetFiles as $absoluteFilePath) {
             $fileContent = file_get_contents($absoluteFilePath);
             $fileContent = str_replace("\*\*", "**", $fileContent);
