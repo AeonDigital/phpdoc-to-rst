@@ -140,7 +140,7 @@ class MainCommand extends Command
             }
         }
 
-
+$show = true;
         foreach ($targetFiles as $absoluteFilePath) {
             $fileContent = file_get_contents($absoluteFilePath);
             $fileContent = str_replace("\*\*", "**", $fileContent);
@@ -148,12 +148,26 @@ class MainCommand extends Command
             $fileLines = explode("\n", $fileContent);
             $insideCodeBlock = false;
             foreach ($fileLines as $i => $line) {
-                $nline = str_replace("\\\\", "§", $line);
+                $nline = $line;
+
+                if (strpos($nline, ".. php:namespace::") !== false) {
+                    $nline = str_replace("\\", "§", $nline);
+                }
+
+                $paramType = [];
+                if (preg_match('/\- ‹ ([\S ]+) ›/', $nline, $paramType) === 1) {
+                    $escapedType = str_replace("\\", "§", $paramType[1]);
+                    $nline = str_replace($paramType[1], $escapedType, $nline);    
+                }
+
+                
+                $nline = str_replace("\\\\", "§", $nline);
                 $nline = str_replace("\\", "", $nline);
                 $nline = str_replace("§", "\\", $nline);
                 $nline = str_replace("\"", "&#34;", $nline);
                 $nline = str_replace("'", "&#39;", $nline);
                 $nline = str_replace(":maxdepth: 1", ":maxdepth: 6", $nline);
+
 
                 $hasCodeBlockMarkup = (strpos($nline, "```") !== false);
                 if ($insideCodeBlock === false) {
@@ -163,10 +177,8 @@ class MainCommand extends Command
                 }
 
 
-                if (strpos($nline, ":php:namespace:") !== false ||
-                    strpos($nline, ":php:interface:") !== false ||
-                    strpos($nline, ":php:class:") !== false ||
-                    strpos($nline, ":Returns:") !== false) {
+                if (strpos($nline, ":php:class:") !== false ||
+                    strpos($nline, ":php:interface:") !== false) {
                     $nline = str_replace("\\", "\\\\", $nline);
                 }
 
