@@ -178,11 +178,13 @@ class MainCommand extends Command
 
 
                 if (strpos($nline, ":php:class:") !== false ||
-                    strpos($nline, ":php:interface:") !== false) {
+                    strpos($nline, ":php:interface:") !== false ||
+                    strpos($nline, ":Returns:") !== false) {
                     $nline = str_replace("\\", "\\\\", $nline);
                 }
 
                 $nline = str_replace("```", "\`\`\`", $nline);
+                $nline = str_replace("``&#39;&#39;``", "``''``", $nline);
                 $fileLines[$i] = $nline;
             }
 
