@@ -104,7 +104,7 @@ class MainCommand extends Command
 
 
     /**
-     * Get the static content provider in `src/_static` directory and merge it with 
+     * Get the static content provider in `src/_static` directory and merge it with
      * the content of destination files.
      *
      * @param string $destinationPath Path where the reST files will be created.
@@ -157,10 +157,10 @@ class MainCommand extends Command
                 $paramType = [];
                 if (preg_match('/\- ‹ ([\S ]+) ›/', $nline, $paramType) === 1) {
                     $escapedType = str_replace("\\", "§", $paramType[1]);
-                    $nline = str_replace($paramType[1], $escapedType, $nline);    
+                    $nline = str_replace($paramType[1], $escapedType, $nline);
                 }
 
-                
+
                 $nline = str_replace("\\\\", "§", $nline);
                 $nline = str_replace("\\", "", $nline);
                 $nline = str_replace("§", "\\", $nline);
@@ -171,9 +171,9 @@ class MainCommand extends Command
 
                 $hasCodeBlockMarkup = (strpos($nline, "```") !== false);
                 if ($insideCodeBlock === false) {
-                    $insideCodeBlock = true; 
+                    $insideCodeBlock = true;
                 } else {
-                    $insideCodeBlock = false; 
+                    $insideCodeBlock = false;
                 }
 
 
@@ -191,6 +191,73 @@ class MainCommand extends Command
 
             $fileContent = implode("\n", $fileLines);
             file_put_contents($absoluteFilePath, $fileContent);
+        }
+    }
+
+
+
+    protected function compileGlobalFunctions() : void
+    {
+        $globalFunctionFiles = \scandir("src/global_functions");
+        $globalFunctionsSource = [];
+        foreach ($globalFunctionFiles as $fileName) {
+            if ($fileName !== "." && $fileName !== "..") {
+                $tmpSource = \file_get_contents("src/global_functions/$fileName");
+                $globalFunctionsSource[] = \substr($tmpSource, \strpos($tmpSource, "/**"));
+            }
+        }
+
+        if (\count($globalFunctionsSource) > 0) {
+            $source = "<?php\n\n class TempGlobalFunctions {\n\n\n".\implode("\n\n\n", $globalFunctionsSource)."}";
+            \file_put_contents("src/TempGlobalFunctions.php", $source);
+        }
+    }
+
+
+    protected function parseTempGlobalFunctions() : void
+    {
+        if (\file_exists("src/TempGlobalFunctions.php") === true) {
+            $rstTempGlobalFunctions = \file_get_contents("docs/TempGlobalFunctions.rst");
+            \unlink("src/TempGlobalFunctions.php");
+            \unlink("docs/TempGlobalFunctions.rst");
+
+
+            $rstTempGlobalFunctions = \substr(
+                $rstTempGlobalFunctions,
+                \strpos($rstTempGlobalFunctions, ".. rst-class:: public")
+            );
+
+            $rawRSTFunctions = \array_map(
+                "trim",
+                \explode(".. rst-class:: public", $rstTempGlobalFunctions)
+            );
+
+
+            if (\count($rawRSTFunctions) > 0) {
+                if (\file_exists("docs/global_functions") === false) {
+                    \mkdir("docs/global_functions");
+                }
+                else {
+                    $this->clearDirectory("docs/global_functions");
+                }
+
+                foreach ($rawRSTFunctions as $rawRST) {
+                    $rawLines = array_map("trim", explode("\n", $rawRST));
+                    preg_match('/(\S+):: public (\S+)\(/', $rawLines[0], $output_array);
+
+                    if (\count($output_array) === 3) {
+                        $functionName = $output_array[2];
+                        $lengthName = \mb_strlen($functionName);
+
+                        $newRST = \str_repeat("-", $lengthName) . "\n";
+                        $newRST .= $functionName . "\n";
+                        $newRST .= \str_repeat("-", $lengthName) . "\n\n\n";
+                        $newRST .= str_replace(".. php:method:: public", ".. php:function::", $rawRST);
+
+                        \file_put_contents("docs/global_functions/$functionName.rst", $newRST);
+                    }
+                }
+            }
         }
     }
 }

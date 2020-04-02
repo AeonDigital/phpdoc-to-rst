@@ -57,6 +57,7 @@ class GenerateDocumentationCommand extends MainCommand
         $src = $input->getArgument('src');
         $dst = $input->getArgument('target');
 
+
         $apiDocBuilder = new ApiDocBuilder($src, $dst);
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $apiDocBuilder->setVerboseOutput(true);
@@ -81,7 +82,9 @@ class GenerateDocumentationCommand extends MainCommand
                 $input->getOption('repo-github'),
             ]);
         }
+        $this->compileGlobalFunctions();
         $apiDocBuilder->build();
+        $this->parseTempGlobalFunctions();
         $this->mergeStaticContent($dst);
         $this->reParseRestFiles($dst);
     }
