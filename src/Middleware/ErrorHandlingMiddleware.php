@@ -47,7 +47,7 @@ final class ErrorHandlingMiddleware implements Middleware
      *
      * @return object
      */
-    public function execute(Command $command, callable $next)
+    public function execute(Command $command, callable $next) : object
     {
         $filename = $command->getFile()->path();
         $this->apiDocBuilder->debug('Starting to parse file: '.$filename);

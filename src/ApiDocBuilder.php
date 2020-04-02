@@ -36,7 +36,7 @@ use phpDocumentor\Reflection\Php\Namespace_;
 use phpDocumentor\Reflection\Php\NodesFactory;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use phpDocumentor\Reflection\PrettyPrinter;
+use PhpParser\PrettyPrinter\Standard as PrettyPrinter;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -123,7 +123,10 @@ final class ApiDocBuilder
                 }
 
                 try {
-                    $interfaceList[] = new LocalFile($file->getPathname());
+                    if (strpos($file->getPathname(), "bootstrap.php") === false &&
+                        strpos($file->getPathname(), "global_functions") === false) {
+                        $interfaceList[] = new LocalFile($file->getPathname());
+                    }
                 } catch (Exception $e) {
                     $this->log('Failed to load '.$file->getPathname().PHP_EOL);
                 }
@@ -133,11 +136,16 @@ final class ApiDocBuilder
         $projectFactory = new ProjectFactory([
             new Factory\Argument(new PrettyPrinter()),
             new Factory\Class_(),
-            new Factory\Constant(new PrettyPrinter()),
+            new Factory\ClassConstant(new PrettyPrinter()),
             new Factory\DocBlock(DocBlockFactory::createInstance()),
-            new Factory\File(NodesFactory::createInstance(), [
-                    new ErrorHandlingMiddleware($this),
-                ]),
+            new Factory\File(
+                NodesFactory::createInstance(),
+                [
+                    new ErrorHandlingMiddleware(
+                        $this, function($cmd) { echo $cmd; return new stdClass();}
+                    ),
+                ]
+            ),
             new Factory\Function_(),
             new Factory\Interface_(),
             new Factory\Method(),
