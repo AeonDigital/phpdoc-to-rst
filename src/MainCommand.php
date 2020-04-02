@@ -249,9 +249,9 @@ class MainCommand extends Command
                         $functionName = $output_array[2];
                         $lengthName = \mb_strlen($functionName);
 
-                        $newRST = \str_repeat("-", $lengthName) . "\n";
+                        $newRST = \str_repeat("=", $lengthName) . "\n";
                         $newRST .= $functionName . "\n";
-                        $newRST .= \str_repeat("-", $lengthName) . "\n\n\n";
+                        $newRST .= \str_repeat("=", $lengthName) . "\n\n\n";
                         $newRST .= str_replace(".. php:method:: public", ".. php:function::", $rawRST);
 
                         \file_put_contents("docs/global_functions/$functionName.rst", $newRST);
