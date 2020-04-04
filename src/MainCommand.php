@@ -198,18 +198,20 @@ class MainCommand extends Command
 
     protected function compileGlobalFunctions() : void
     {
-        $globalFunctionFiles = \scandir("src/global_functions");
-        $globalFunctionsSource = [];
-        foreach ($globalFunctionFiles as $fileName) {
-            if ($fileName !== "." && $fileName !== "..") {
-                $tmpSource = \file_get_contents("src/global_functions/$fileName");
-                $globalFunctionsSource[] = \substr($tmpSource, \strpos($tmpSource, "/**"));
+        if (\file_exists("src/global_functions") === true) {
+            $globalFunctionFiles = \scandir("src/global_functions");
+            $globalFunctionsSource = [];
+            foreach ($globalFunctionFiles as $fileName) {
+                if ($fileName !== "." && $fileName !== "..") {
+                    $tmpSource = \file_get_contents("src/global_functions/$fileName");
+                    $globalFunctionsSource[] = \substr($tmpSource, \strpos($tmpSource, "/**"));
+                }
             }
-        }
 
-        if (\count($globalFunctionsSource) > 0) {
-            $source = "<?php\n\n class TempGlobalFunctions {\n\n\n".\implode("\n\n\n", $globalFunctionsSource)."}";
-            \file_put_contents("src/TempGlobalFunctions.php", $source);
+            if (\count($globalFunctionsSource) > 0) {
+                $source = "<?php\n\n class TempGlobalFunctions {\n\n\n".\implode("\n\n\n", $globalFunctionsSource)."}";
+                \file_put_contents("src/TempGlobalFunctions.php", $source);
+            }
         }
     }
 
